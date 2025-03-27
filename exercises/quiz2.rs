@@ -1,26 +1,25 @@
 // quiz2.rs
 //
-// This is a quiz for the following sections:
-// - Strings
-// - Vecs
-// - Move semantics
-// - Modules
-// - Enums
+// 这是一个关于以下章节的测验：
+// - 字符串
+// - 向量
+// - 移动语义
+// - 模块
+// - 枚举
 //
-// Let's build a little machine in the form of a function. As input, we're going
-// to give a list of strings and commands. These commands determine what action
-// is going to be applied to the string. It can either be:
-// - Uppercase the string
-// - Trim the string
-// - Append "bar" to the string a specified amount of times
-// The exact form of this will be:
-// - The input is going to be a Vector of a 2-length tuple,
-//   the first element is the string, the second one is the command.
-// - The output element is going to be a Vector of strings.
+// 让我们构建一个函数形式的机器。作为输入，我们将给出一个字符串和命令的列表。
+// 这些命令决定了要对字符串执行什么操作。可以是：
+// - 将字符串转换为大写
+// - 修剪字符串
+// - 将"bar"追加到字符串指定次数
+// 具体形式如下：
+// - 输入将是一个长度为2的元组的向量，
+//   第一个元素是字符串，第二个是命令。
+// - 输出元素将是一个字符串向量。
 //
-// No hints this time!
+// 这次没有提示！
 
-// I AM NOT DONE
+// 我还没有完成
 
 pub enum Command {
     Uppercase,
@@ -31,12 +30,17 @@ pub enum Command {
 mod my_module {
     use super::Command;
 
-    // TODO: Complete the function signature!
-    pub fn transformer(input: ???) -> ??? {
-        // TODO: Complete the output declaration!
-        let mut output: ??? = vec![];
+    // TODO: 完成函数签名！
+    pub fn transformer(input: Vec<(String, Command)>) -> Vec<String> {
+        // TODO: 完成输出声明！
+        let mut output: Vec<String> = vec![];
         for (string, command) in input.iter() {
-            // TODO: Complete the function body. You can do it!
+            // TODO: 完成函数体。你可以做到的！
+            match command {
+                Command::Uppercase => output.push(string.to_uppercase()),
+                Command::Trim => output.push(string.trim().to_string()),
+                Command::Append(n) => output.push(format!("{}{}", string, "bar".repeat(*n))),
+            }
         }
         output
     }
@@ -44,8 +48,8 @@ mod my_module {
 
 #[cfg(test)]
 mod tests {
-    // TODO: What do we need to import to have `transformer` in scope?
-    use ???;
+    // TODO: 我们需要导入什么来使 `transformer` 在作用域内？
+    use crate::my_module::transformer;
     use super::Command;
 
     #[test]
