@@ -1,20 +1,22 @@
 // iterators4.rs
 //
-// Execute `rustlings hint iterators4` or use the `hint` watch subcommand for a
-// hint.
-
-// I AM NOT DONE
+// 执行 `rustlings hint iterators4` 或使用 `hint` watch 子命令来获取提示。
 
 pub fn factorial(num: u64) -> u64 {
-    // Complete this function to return the factorial of num
-    // Do not use:
-    // - return
-    // Try not to use:
-    // - imperative style loops (for, while)
-    // - additional variables
-    // For an extra challenge, don't use:
-    // - recursion
-    // Execute `rustlings hint iterators4` for hints.
+    if num == 0 {
+        1
+    } else {
+        factorial(num - 1) * num
+    }
+    // 完成这个函数来返回 num 的阶乘
+    // 不要使用：
+    // - return 语句
+    // 尽量不要使用：
+    // - 命令式循环（for, while）
+    // - 额外的变量
+    // 作为额外挑战，不要使用：
+    // - 递归
+    // 执行 `rustlings hint iterators4` 获取提示。
 }
 
 #[cfg(test)]

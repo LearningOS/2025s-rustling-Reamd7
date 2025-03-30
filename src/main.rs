@@ -31,12 +31,12 @@ mod verify;
 const VERSION: &str = "5.5.1";
 
 #[derive(FromArgs, PartialEq, Debug)]
-/// Rustlings is a collection of small exercises to get you used to writing and reading Rust code
+/// Rustlings 是一系列小练习的集合，帮助你熟悉编写和阅读 Rust 代码
 struct Args {
-    /// show outputs from the test exercises
+    /// 显示测试练习的输出
     #[argh(switch)]
     nocapture: bool,
-    /// show the executable version
+    /// 显示可执行文件的版本
     #[argh(switch, short = 'v')]
     version: bool,
     #[argh(subcommand)]
@@ -62,69 +62,69 @@ struct CicvVerifyArgs {}
 
 #[derive(FromArgs, PartialEq, Debug)]
 #[argh(subcommand, name = "verify")]
-/// Verifies all exercises according to the recommended order
+/// 按照推荐顺序验证所有练习
 struct VerifyArgs {}
 
 #[derive(FromArgs, PartialEq, Debug)]
 #[argh(subcommand, name = "watch")]
-/// Reruns `verify` when files were edited
+/// 当文件被编辑时重新运行 `verify`
 struct WatchArgs {
-    /// show hints on success
+    /// 成功时显示提示
     #[argh(switch)]
     success_hints: bool,
 }
 
 #[derive(FromArgs, PartialEq, Debug)]
 #[argh(subcommand, name = "run")]
-/// Runs/Tests a single exercise
+/// 运行/测试单个练习
 struct RunArgs {
     #[argh(positional)]
-    /// the name of the exercise
+    /// 练习的名称
     name: String,
 }
 
 #[derive(FromArgs, PartialEq, Debug)]
 #[argh(subcommand, name = "reset")]
-/// Resets a single exercise using "git stash -- <filename>"
+/// 使用 "git stash -- <filename>" 重置单个练习
 struct ResetArgs {
     #[argh(positional)]
-    /// the name of the exercise
+    /// 练习的名称
     name: String,
 }
 
 #[derive(FromArgs, PartialEq, Debug)]
 #[argh(subcommand, name = "hint")]
-/// Returns a hint for the given exercise
+/// 返回给定练习的提示
 struct HintArgs {
     #[argh(positional)]
-    /// the name of the exercise
+    /// 练习的名称
     name: String,
 }
 
 #[derive(FromArgs, PartialEq, Debug)]
 #[argh(subcommand, name = "lsp")]
-/// Enable rust-analyzer for exercises
+/// 为练习启用 rust-analyzer
 struct LspArgs {}
 
 #[derive(FromArgs, PartialEq, Debug)]
 #[argh(subcommand, name = "list")]
-/// Lists the exercises available in Rustlings
+/// 列出 Rustlings 中可用的练习
 struct ListArgs {
     #[argh(switch, short = 'p')]
-    /// show only the paths of the exercises
+    /// 仅显示练习的路径
     paths: bool,
     #[argh(switch, short = 'n')]
-    /// show only the names of the exercises
+    /// 仅显示练习的名称
     names: bool,
     #[argh(option, short = 'f')]
-    /// provide a string to match exercise names
-    /// comma separated patterns are acceptable
+    /// 提供用于匹配练习名称的字符串
+    /// 支持逗号分隔的模式
     filter: Option<String>,
     #[argh(switch, short = 'u')]
-    /// display only exercises not yet solved
+    /// 仅显示尚未解决的练习
     unsolved: bool,
     #[argh(switch, short = 's')]
-    /// display only exercises that have been solved
+    /// 仅显示已解决的练习
     solved: bool,
 }
 
