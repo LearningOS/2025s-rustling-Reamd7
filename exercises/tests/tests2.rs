@@ -1,10 +1,10 @@
 // tests2.rs
 //
-// This test has a problem with it -- make the test compile! Make the test pass!
-// Make the test fail!
+// 此测试存在问题 - 使测试编译！使测试通过！
+// 使测试失败！
 //
-// Execute `rustlings hint tests2` or use the `hint` watch subcommand for a
-// hint.
+// 执行 `rustlings hint tests2` 或使用 `hint` 观察子命令来获取
+// 提示。
 
 #[cfg(test)]
 mod tests {
