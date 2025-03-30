@@ -1,15 +1,15 @@
 // threads2.rs
 //
-// Building on the last exercise, we want all of the threads to complete their
-// work but this time the spawned threads need to be in charge of updating a
-// shared value: JobStatus.jobs_completed
+// 在上一个练习的基础上，我们希望所有的线程都完成它们的工作，
+// 但这一次，生成的线程需要负责更新一个
+// 共享值：JobStatus.jobs_completed
 //
-// Execute `rustlings hint threads2` or use the `hint` watch subcommand for a
-// hint.
+// 执行 `rustlings hint threads2` 或使用 `hint` watch 子命令来获取
+// 提示。
 
-// I AM NOT DONE
 
-use std::sync::Arc;
+
+use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::Duration;
 
@@ -18,12 +18,13 @@ struct JobStatus {
 }
 
 fn main() {
-    let status = Arc::new(JobStatus { jobs_completed: 0 });
+    let status = Arc::new(Mutex::new(JobStatus { jobs_completed: 0 }));
     let mut handles = vec![];
     for _ in 0..10 {
         let status_shared = Arc::clone(&status);
         let handle = thread::spawn(move || {
             thread::sleep(Duration::from_millis(250));
+            let mut status_shared = status_shared.lock().unwrap();
             // TODO: You must take an action before you update a shared value
             status_shared.jobs_completed += 1;
         });
@@ -34,6 +35,6 @@ fn main() {
         // TODO: Print the value of the JobStatus.jobs_completed. Did you notice
         // anything interesting in the output? Do you have to 'join' on all the
         // handles?
-        println!("jobs completed {}", ???);
+        println!("jobs completed {}", status.lock().unwrap().jobs_completed);
     }
 }
