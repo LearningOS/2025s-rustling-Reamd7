@@ -1,40 +1,32 @@
 // tests7.rs
 //
-// When building packages, some dependencies can neither be imported in
-// `Cargo.toml` nor be directly linked; some preprocesses varies from code
-// generation to set-up package-specific configurations.
+// 在构建包时，某些依赖项既不能在 `Cargo.toml` 中导入，也不能直接链接；
+// 某些预处理过程因代码生成而异，以设置特定于包的配置。
 //
-// Cargo does not aim to replace other build tools, but it does integrate
-// with them with custom build scripts called `build.rs`. This file is
-// usually placed in the root of the project, while in this case the same
-// directory of this exercise.
+// Cargo 并不旨在取代其他构建工具，但它通过自定义构建脚本（称为 `build.rs`）与它们集成。
+// 此文件通常放置在项目的根目录中，而在本例中，放置在本练习的同一目录中。
 //
-// It can be used to:
+// 它可以用于：
 //
-// - Building a bundled C library.
-// - Finding a C library on the host system.
-// - Generating a Rust module from a specification.
-// - Performing any platform-specific configuration needed for the crate.
+// - 构建捆绑的 C 库。
+// - 在主机系统上查找 C 库。
+// - 从规范生成 Rust 模块。
+// - 执行 crate 所需的任何平台特定配置。
 //
-// When setting up configurations, we can `println!` in the build script
-// to tell Cargo to follow some instructions. The generic format is:
+// 在设置配置时，我们可以在构建脚本中使用 `println!` 来告诉 Cargo 遵循一些指令。
+// 通用格式为：
 //
 //     println!("cargo:{}", your_command_in_string);
 //
-// Please see the official Cargo book about build scripts for more
-// information:
+// 有关构建脚本的更多信息，请参阅官方 Cargo 手册：
 // https://doc.rust-lang.org/cargo/reference/build-scripts.html
 //
-// In this exercise, we look for an environment variable and expect it to
-// fall in a range. You can look into the testcase to find out the details.
+// 在本练习中，我们查找一个环境变量，并期望它落在一个范围内。您可以查看测试用例以了解详细信息。
 //
-// You should NOT modify this file. Modify `build.rs` in the same directory
-// to pass this exercise.
+// 您不应修改此文件。修改同一目录中的 `build.rs` 以通过此练习。
 //
-// Execute `rustlings hint tests7` or use the `hint` watch subcommand for a
-// hint.
-
-// I AM NOT DONE
+// 执行 `rustlings hint tests7` 或使用 `hint` 观察子命令来获取
+// 提示。
 
 fn main() {}
 
