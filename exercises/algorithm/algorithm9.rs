@@ -1,154 +1,88 @@
 /*
-	heap
-	This question requires you to implement a binary heap function
+	linked_list
+	这个问题要求你使用链表来实现LRU算法
 */
-// I AM NOT DONE
 
-use std::cmp::Ord;
-use std::default::Default;
+use std::collections::HashMap;
 
-pub struct Heap<T>
-where
-    T: Default,
-{
-    count: usize,
-    items: Vec<T>,
-    comparator: fn(&T, &T) -> bool,
+#[derive(Debug, Clone)]
+struct Node<K, V> {
+    key: K,
+    value: V,
+    prev: Option<Box<Node<K, V>>>,
+    next: Option<Box<Node<K, V>>>,
 }
 
-impl<T> Heap<T>
+#[derive(Debug)]
+pub struct LRUCache<K, V> {
+    capacity: usize,
+    map: HashMap<K, V>,
+    head: Option<Box<Node<K, V>>>,
+    tail: Option<Box<Node<K, V>>>,
+}
+
+impl<K, V> LRUCache<K, V>
 where
-    T: Default,
+    K: Eq + PartialEq + std::hash::Hash + Copy + Clone,
+    V: Copy + Clone,
 {
-    pub fn new(comparator: fn(&T, &T) -> bool) -> Self {
-        Self {
-            count: 0,
-            items: vec![T::default()],
-            comparator,
+    pub fn new(capacity: usize) -> Self {
+        LRUCache {
+            capacity,
+            map: HashMap::new(),
+            head: None,
+            tail: None,
         }
     }
 
-    pub fn len(&self) -> usize {
-        self.count
+    pub fn get(&mut self, key: K) -> Option<&V> {
+        if let Some(value) = self.map.get(&key) {
+            self.remove(key);
+            self.add(key, value);
+            Some(value)
+        } else {
+            None
+        }
     }
 
-    pub fn is_empty(&self) -> bool {
-        self.len() == 0
-    }
-
-    pub fn add(&mut self, value: T) {
+    pub fn put(&mut self, key: K, value: V) {
         //TODO
+        if let Some(old_value) = self.map.get(&key) {
+            self.remove(key);
+            self.add(key, value);
+        } else {
+            self.add(key, value);
+        }
     }
 
-    fn parent_idx(&self, idx: usize) -> usize {
-        idx / 2
+    fn add(&mut self, key: K, value: V) {
+        let new_node = Box::new(Node {
+            key,
+            value,
+            prev: None,
+            next: None,
+        });
+        if let Some(tail) = self.tail.take().as_mut() {
+            tail.next = Some(new_node);
+            new_node.prev = Some(tail);
+        } else {
+            self.head = Some(new_node);
+        }
+        self.tail = Some(new_node);
     }
 
-    fn children_present(&self, idx: usize) -> bool {
-        self.left_child_idx(idx) <= self.count
-    }
-
-    fn left_child_idx(&self, idx: usize) -> usize {
-        idx * 2
-    }
-
-    fn right_child_idx(&self, idx: usize) -> usize {
-        self.left_child_idx(idx) + 1
-    }
-
-    fn smallest_child_idx(&self, idx: usize) -> usize {
-        //TODO
-		0
-    }
-}
-
-impl<T> Heap<T>
-where
-    T: Default + Ord,
-{
-    /// Create a new MinHeap
-    pub fn new_min() -> Self {
-        Self::new(|a, b| a < b)
-    }
-
-    /// Create a new MaxHeap
-    pub fn new_max() -> Self {
-        Self::new(|a, b| a > b)
-    }
-}
-
-impl<T> Iterator for Heap<T>
-where
-    T: Default,
-{
-    type Item = T;
-
-    fn next(&mut self) -> Option<T> {
-        //TODO
-		None
-    }
-}
-
-pub struct MinHeap;
-
-impl MinHeap {
-    #[allow(clippy::new_ret_no_self)]
-    pub fn new<T>() -> Heap<T>
-    where
-        T: Default + Ord,
-    {
-        Heap::new(|a, b| a < b)
-    }
-}
-
-pub struct MaxHeap;
-
-impl MaxHeap {
-    #[allow(clippy::new_ret_no_self)]
-    pub fn new<T>() -> Heap<T>
-    where
-        T: Default + Ord,
-    {
-        Heap::new(|a, b| a > b)
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn test_empty_heap() {
-        let mut heap = MaxHeap::new::<i32>();
-        assert_eq!(heap.next(), None);
-    }
-
-    #[test]
-    fn test_min_heap() {
-        let mut heap = MinHeap::new();
-        heap.add(4);
-        heap.add(2);
-        heap.add(9);
-        heap.add(11);
-        assert_eq!(heap.len(), 4);
-        assert_eq!(heap.next(), Some(2));
-        assert_eq!(heap.next(), Some(4));
-        assert_eq!(heap.next(), Some(9));
-        heap.add(1);
-        assert_eq!(heap.next(), Some(1));
-    }
-
-    #[test]
-    fn test_max_heap() {
-        let mut heap = MaxHeap::new();
-        heap.add(4);
-        heap.add(2);
-        heap.add(9);
-        heap.add(11);
-        assert_eq!(heap.len(), 4);
-        assert_eq!(heap.next(), Some(11));
-        assert_eq!(heap.next(), Some(9));
-        assert_eq!(heap.next(), Some(4));
-        heap.add(1);
-        assert_eq!(heap.next(), Some(2));
+    fn remove(&mut self, key: K) {
+        if let Some(node) = self.map.remove(&key) {
+            if let Some(prev) = node.prev {
+                prev.next = node.next;
+            } else {
+                self.head = node.next;
+            }
+            if let Some(next) = node.next {
+                next.prev = node.prev;
+            } else {
+                self.tail = node.prev;
+            }   
+        }
     }
 }

@@ -1,9 +1,8 @@
 /*
-	stack
-	This question requires you to use a stack to achieve a bracket match
+	栈
+	此问题要求您使用栈来实现括号匹配
 */
 
-// I AM NOT DONE
 #[derive(Debug)]
 struct Stack<T> {
 	size: usize,
@@ -32,7 +31,11 @@ impl<T> Stack<T> {
 	}
 	fn pop(&mut self) -> Option<T> {
 		// TODO
-		None
+		if self.is_empty() {
+			return None;
+		}
+		self.size -= 1;
+		self.data.pop()
 	}
 	fn peek(&self) -> Option<&T> {
 		if 0 == self.size {
@@ -86,7 +89,13 @@ struct Iter<'a, T: 'a> {
 impl<'a, T> Iterator for Iter<'a, T> {
 	type Item = &'a T;
 	fn next(&mut self) -> Option<Self::Item> {
-		self.stack.pop()
+		if self.stack.is_empty(){
+			None
+		}else{
+			let res = self.stack.pop();
+			return res;
+		}
+		
 	}
 }
 struct IterMut<'a, T: 'a> {
@@ -102,7 +111,24 @@ impl<'a, T> Iterator for IterMut<'a, T> {
 fn bracket_match(bracket: &str) -> bool
 {
 	//TODO
-	true
+	let mut stack = Stack::new();
+	for c in bracket.chars() {
+		if c == '(' || c == '[' || c == '{' {
+			stack.push(c);
+		}
+		else if c == ')' || c == ']' || c == '}' {
+			if stack.is_empty() {
+				return false;
+			}   
+			let top = stack.pop().unwrap();
+			if (c == ')' && top != '(') ||
+			   (c == ']' && top != '[') ||
+			   (c == '}' && top != '{') {
+				return false;
+			}
+		}
+	}
+	stack.is_empty()
 }
 
 #[cfg(test)]

@@ -1,12 +1,11 @@
 /*
-	single linked list merge
-	This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
+	单链表合并
+	此问题要求您将两个有序单链表合并为一个有序单链表
 */
-// I AM NOT DONE
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
-use std::vec::*;
+// use std::vec::*;
 
 #[derive(Debug)]
 struct Node<T> {
@@ -29,13 +28,13 @@ struct LinkedList<T> {
     end: Option<NonNull<Node<T>>>,
 }
 
-impl<T> Default for LinkedList<T> {
+impl<T: std::cmp::PartialOrd + Clone> Default for LinkedList<T> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<T> LinkedList<T> {
+impl<T: std::cmp::PartialOrd + Clone> LinkedList<T> {
     pub fn new() -> Self {
         Self {
             length: 0,
@@ -72,11 +71,40 @@ impl<T> LinkedList<T> {
 	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
 	{
 		//TODO
-		Self {
+		let mut list_c = Self {
             length: 0,
             start: None,
             end: None,
+        };
+
+        let mut current_a = list_a.start;
+        let mut current_b = list_b.start;
+
+        while let Some(node_a) = current_a {
+            if let Some(node_b) = current_b {
+                let node_a = unsafe { node_a.as_ref() };
+                let node_b = unsafe { node_b.as_ref() };
+                if node_a.val < node_b.val {
+                    list_c.add(node_a.val.clone());
+                    current_a = node_a.next;
+                } else {
+                    list_c.add(node_b.val.clone());
+                    current_b = node_b.next;
+                }
+            } else {
+                let node_a = unsafe { node_a.as_ref() };
+                list_c.add(node_a.val.clone());
+                current_a = node_a.next;
+            }
         }
+
+        while let Some(node_b) = current_b {
+            let node_b = unsafe { node_b.as_ref() };
+            list_c.add(node_b.val.clone());
+            current_b = node_b.next;
+        }
+
+        list_c
 	}
 }
 
